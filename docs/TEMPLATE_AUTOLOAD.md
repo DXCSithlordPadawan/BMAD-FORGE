@@ -4,7 +4,7 @@
 
 The BMAD Forge application now includes an **automatic template loading system** that loads agent prompts and document templates from the filesystem into the database when the application starts for the first time.
 
-**Version:** 3.1.0  
+**Version:** 3.2.0  
 **Feature Status:** ✅ Production-Ready  
 **Security Compliance:** OWASP Top 10, NIST Guidelines
 
