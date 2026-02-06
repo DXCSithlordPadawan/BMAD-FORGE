@@ -412,7 +412,7 @@ The auto-load is optimized for:
 
 ## Changelog
 
-### Version 3.1.0 (Current)
+### Version 3.2.0 (Current)
 - ✅ Added automatic template loading on first startup
 - ✅ Created `forge/utils/template_loader.py` module
 - ✅ Updated `forge/apps.py` with ready() hook
