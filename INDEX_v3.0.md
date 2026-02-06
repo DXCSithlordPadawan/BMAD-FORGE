@@ -1,8 +1,8 @@
-# BMAD Forge Deployment Package v3.0.0
+# BMAD Forge Deployment Package v3.2.0
 ## Complete Refactored Deployment System
 
 **Release Date**: February 5, 2026  
-**Package Version**: 3.0.0  
+**Package Version**: 3.2.0  
 **Django Version**: 4.2+  
 **Python Version**: 3.13+  
 
