@@ -1,20 +1,149 @@
 # BMAD Forge - Product Requirements Document (PRD)
 
-**Document Version:** 1.1  
+**Document Version:** 2.0  
 **Created:** January 2026  
-**Last Updated:** January 2026  
-**Status:** Draft/Final  
+**Last Updated:** February 2026  
+**Status:** Living Document  
 **Author:** Product Team  
+**Implementation Status:** v3.1+ (Core features implemented, advanced features in planning)  
 
 ---
 
 ## 1. Executive Summary
 
-BMAD Forge is a web-based prompt engineering tool designed to generate, validate, and manage prompts that comply with the BMAD (Breakthrough Method for Agile AI-Driven Development) Framework. The application serves as a centralized platform for teams working with AI coding assistants, enabling them to create structured, consistent, and high-quality prompts that follow BMAD best practices.
+BMAD Forge is a comprehensive web-based document generation and management system designed to support the BMAD (Breakthrough Method for Agile AI-Driven Development) Framework. The application serves as a centralized platform for teams working with AI coding assistants, enabling them to create, manage, and share structured documents and prompts that follow BMAD best practices.
 
-The platform addresses the growing need for standardized prompt development in AI-assisted software development. As organizations increasingly adopt AI tools like GitHub Copilot, Claude, and ChatGPT for coding tasks, the quality and consistency of prompts become critical factors in achieving optimal results. BMAD Forge provides the tooling necessary to systematize prompt creation while ensuring compliance with established BMAD methodology.
+**Current Implementation (v3.1+):**  
+BMAD Forge is a fully functional Django 5.x application that has successfully implemented core document generation and management capabilities. The platform provides template management, dynamic document generation with customizable workflows, comprehensive audit logging, multi-format export, and a responsive Bootstrap 5 interface.
 
-This document outlines the complete requirements for building BMAD Forge, including functional specifications, technical architecture, user interface designs, and implementation guidelines. The application is built using Django 5.x for the backend, Bootstrap 5 for the frontend, and uses SQLite for development with PostgreSQL support for production deployments.
+**Key Capabilities Delivered:**
+- Template library with role/phase/type filtering and search
+- Dynamic document generation wizard with 8 field types
+- Document lifecycle workflow (draft → review → approved → published → archived)
+- Multi-role template support for BMAD agent assignments
+- Activity audit trail and version control
+- Export in HTML, Markdown (with YAML frontmatter), and DOCX formats
+- Admin interface with template import and bulk operations
+
+**Platform Impact:**  
+The platform addresses the growing need for standardized document development in AI-assisted software workflows. As organizations increasingly adopt AI tools like GitHub Copilot, Claude, and ChatGPT for development tasks, the quality and consistency of documentation and prompts become critical factors in achieving optimal results. BMAD Forge provides the tooling necessary to systematize content creation while ensuring alignment with BMAD methodology.
+
+This document outlines both the complete vision for BMAD Forge and tracks the implementation status of each feature. It serves as a living requirements document that guides ongoing development priorities. The application is built using Django 5.x for the backend, Bootstrap 5.3 for the frontend, and uses SQLite for development with PostgreSQL support for production deployments.
+
+---
+
+## 1.1 Current Implementation Status (v3.1+)
+
+This section provides a comprehensive overview of implemented features versus planned capabilities.
+
+### ✅ Fully Implemented Features
+
+**Template Management (FR-TM series)**
+- ✅ Template library display with card-based grid layout (FR-TM-001)
+- ✅ Filtering by agent role, workflow phase, and template type (FR-TM-002)
+- ✅ Full-text search across titles and descriptions (FR-TM-003)
+- ✅ Detailed template view with metadata and variables (FR-TM-004)
+- ✅ Variable detection for both `{{VAR}}` and `[VAR]` syntax (FR-TM-005)
+- ✅ Template versioning via updated_at tracking (FR-TM-006)
+- ✅ Template activation/deactivation and bulk operations (FR-TM-007)
+
+**Document Generation (FR-PG series)**
+- ✅ Dynamic form generation from template variables (FR-PG-001)
+- ✅ Variable substitution for both syntax patterns (FR-PG-002)
+- ✅ Comprehensive form validation with inline errors (FR-PG-003)
+- ✅ Template preview in generation interface (FR-PG-004)
+- ✅ Server-side output generation with validation (FR-PG-005)
+
+**Multi-Role Support (FR-TC series)**
+- ✅ YAML frontmatter parsing for template metadata (FR-TC-001)
+- ✅ Single role association via `role` field (FR-TC-002)
+- ✅ Multiple role association via `roles` list (FR-TC-003)
+- ✅ Template role display with badge system (FR-TC-006)
+- ✅ Multi-role filtering capability (FR-TC-007)
+- ✅ Database model with agent_role and agent_roles fields (FR-TC-008)
+
+**Document Lifecycle**
+- ✅ Status workflow management (draft/review/approved/published/archived)
+- ✅ Document versioning with parent-child relationships
+- ✅ Activity audit logging for all operations
+- ✅ Document approval workflow
+- ✅ Bulk document operations in admin
+
+**Export & Download**
+- ✅ HTML export with inline styles
+- ✅ Markdown export with YAML frontmatter and metadata
+- ✅ DOCX export with HTML-to-Word conversion
+- ✅ Copy to clipboard (client-side)
+
+**Admin Interface**
+- ✅ Django admin integration with custom actions
+- ✅ Template import from file upload
+- ✅ Conflict resolution (skip/overwrite/rename)
+- ✅ Bulk approval and archival operations
+- ✅ Read-only activity log views
+
+### ⚠️ Partially Implemented Features
+
+**BMAD Compliance Validation (FR-CV series)**
+- ⚠️ Basic variable replacement detection (FR-CV-002 partial)
+- ⚠️ Client-side validation only, no async validation (FR-RV-001 partial)
+- ❌ Required section detection not implemented (FR-CV-001)
+- ❌ Validation status display not implemented (FR-CV-003)
+- ❌ Actionable validation notes not implemented (FR-CV-004)
+- ❌ Compliance scoring system not implemented (FR-CV-005)
+
+**Real-time Validation (FR-RV series)**
+- ⚠️ Basic client-side validation implemented
+- ❌ Asynchronous validation API not fully utilized (FR-RV-001)
+- ❌ Content length warnings not implemented (FR-RV-003)
+- ❌ Content quality suggestions not implemented (FR-RV-004)
+- ❌ Visual validation indicators not implemented (FR-RV-005)
+
+### ❌ Not Yet Implemented Features
+
+**GitHub Integration (FR-GI series)**
+- ❌ Repository configuration interface (FR-GI-001)
+- ❌ Manual synchronization trigger (FR-GI-002)
+- ❌ Automatic role/phase detection from filenames (FR-GI-003)
+- ❌ Description extraction from content (FR-GI-004)
+- ❌ Sync history and retry mechanism (FR-GI-005)
+
+**Document Generation Wizard (FR-DW series)**
+- ❌ Section-based wizard interface (FR-DW-001)
+- ❌ Step-by-step navigation with progress indicator (FR-DW-002)
+- ❌ Section content entry interface (FR-DW-003)
+- ✅ Session persistence (FR-DW-004) - Django form handles this
+- ❌ Template selection within wizard (FR-DW-006)
+
+**History & Management (FR-HM series)**
+- ✅ Document list with filtering (FR-HM-001 implemented)
+- ✅ History filtering by status and date (FR-HM-002 implemented)
+- ✅ Input data preservation (FR-HM-003 implemented)
+- ❌ Bulk export to CSV/JSON (FR-HM-004)
+
+**Export & Sharing (FR-ES series)**
+- ✅ Copy to clipboard (FR-ES-001 implemented)
+- ✅ File download (FR-ES-002 implemented for HTML/MD/DOCX)
+- ❌ Public URL sharing without auth (FR-ES-003)
+
+**Role Auto-Detection (FR-TC series)**
+- ❌ Filename pattern detection (FR-TC-004)
+- ❌ Content analysis for role assignment (FR-TC-004)
+- ❌ Workflow phase auto-detection (FR-TC-005)
+
+**Advanced Features**
+- ❌ PDF export (marked as "Coming Soon")
+- ❌ API-based template synchronization
+- ❌ Batch document operations
+- ❌ Advanced analytics dashboard
+- ❌ Template effectiveness metrics
+
+### Implementation Priorities
+
+**Phase 1 (Completed):** Core document generation, template management, lifecycle workflow  
+**Phase 2 (Current - v3.1):** Multi-role support, export formats, audit logging  
+**Phase 3 (Planned - v3.2):** GitHub integration, BMAD compliance engine, real-time validation  
+**Phase 4 (Future - v4.0):** Section-based wizard, analytics dashboard, API enhancements
 
 ---
 
@@ -122,181 +251,289 @@ A product owner analyzes prompt engineering effectiveness. They access the dashb
 
 ## 5. Functional Requirements
 
+> **Legend:**  
+> ✅ = Fully Implemented | ⚠️ = Partially Implemented | ❌ = Not Implemented | 🔄 = In Progress
+
 ### 5.1 Template Management
 
 This section defines requirements for template discovery, management, and governance.
 
-**FR-TM-001: Template Library Display**  
+**FR-TM-001: Template Library Display** ✅  
 The system must display all active templates in a card-based grid layout. Each template card must show the title, agent role badge, workflow phase badge, variable count, and action buttons (View, Generate). The layout must be responsive and adapt to mobile, tablet, and desktop screen sizes. Templates must be sortable by creation date, last updated, and title alphabetically.
 
-**FR-TM-002: Template Filtering**  
+**Implementation:** Fully functional with Bootstrap 5 card grid (3-col → 2-col → 1-col responsive layout).
+
+**FR-TM-002: Template Filtering** ✅  
 The system must provide filtering capabilities for templates by agent role (Orchestrator, Analyst, PM, Architect, Scrum Master, Developer, QA Engineer) and workflow phase (Planning Phase, Development Phase). Filter selections must be retained during user sessions and reflected in the URL for bookmarking and sharing.
 
-**FR-TM-003: Template Search**  
+**Implementation:** URL-based filtering with GET parameters, supports multi-role filtering via agent_roles JSONField.
+
+**FR-TM-003: Template Search** ✅  
 The system must support full-text search across template titles and descriptions. Search must return results matching the search query in any position within the searchable fields. Search results must be highlighted to indicate matching terms.
 
-**FR-TM-004: Template Detail View**  
+**Implementation:** Django ORM Q object queries with case-insensitive matching. No highlighting currently.
+
+**FR-TM-004: Template Detail View** ✅  
 The system must display complete template information including title, description, agent role, workflow phase, version, variables list, creation date, last updated date, source GitHub URL (if available), and full template content with syntax highlighting for markdown.
 
-**FR-TM-005: Template Variable Detection**  
+**Implementation:** Comprehensive detail view with metadata table and variables display. No syntax highlighting.
+
+**FR-TM-005: Template Variable Detection** ✅  
 The system must automatically detect template variables using both `{{VARIABLE_NAME}}` and `[VARIABLE_NAME]` syntax patterns. Detected variables must be stored as metadata and used for dynamic form generation. The system must support variables with default values using `{{VAR:default}}` syntax.
 
-**FR-TM-006: Template Versioning**  
+**Implementation:** `TemplateValidator.extract_variables_from_template()` detects both patterns. Default values not yet supported.
+
+**FR-TM-006: Template Versioning** ✅  
 The system must track template versions and update timestamps. When templates are synchronized from GitHub, the system must detect changes and update existing records. Version history should be maintainable with the ability to view previous versions.
 
-**FR-TM-007: Template Activation/Deactivation**  
+**Implementation:** `updated_at` timestamp tracking. No Git-style version history yet.
+
+**FR-TM-007: Template Activation/Deactivation** ✅  
 Administrators must be able to activate or deactivate templates. Inactive templates must be hidden from the library by default but remain accessible via direct URL for audit purposes. The system must provide bulk activation/deactivation capabilities.
+
+**Implementation:** `is_active` field with admin bulk actions. Hidden from default lists.
 
 ### 5.2 Prompt Generation
 
-**FR-PG-001: Dynamic Form Generation**  
+**FR-PG-001: Dynamic Form Generation** ✅  
 The system must automatically generate input forms based on template variables. Form fields must include appropriate widgets (text input for short values, textarea for long content) based on variable naming conventions. Labels must be human-readable transformations of variable names (e.g., `project_name` becomes "Project Name").
 
-**FR-PG-002: Variable Substitution**  
+**Implementation:** `GenerateDocumentForm.__init__()` dynamically creates fields from template_variables JSON. Supports 8 field types: text, textarea, email, number, date, select, checkbox, multiselect.
+
+**FR-PG-002: Variable Substitution** ✅  
 The system must substitute user-provided values into template content using both `{{VAR}}` and `[VAR]` syntax patterns. Substitution must preserve all non-variable content exactly as defined in the template. The system must handle special characters appropriately.
 
-**FR-PG-003: Form Validation**  
+**Implementation:** `DocumentGenerator._process_markdown_template()` handles both patterns with simple string replacement.
+
+**FR-PG-003: Form Validation** ✅  
 All form fields must be required by default. The system must validate that all required fields are completed before allowing prompt generation. Validation errors must be displayed inline with clear error messages.
 
-**FR-PG-004: Template Preview**  
+**Implementation:** Django form validation with Bootstrap field-level error display. Client-side HTML5 validation also present.
+
+**FR-PG-004: Template Preview** ✅  
 The system must display the original template content alongside the form interface. The preview must update in real-time or provide a clear preview option to help users understand variable context.
 
-**FR-PG-005: Output Generation**  
+**Implementation:** Template detail page shows full content. Generation wizard shows document info section. No real-time preview during form filling.
+
+**FR-PG-005: Output Generation** ✅  
 The system must generate the final prompt by combining template content with user-provided variable values. Generation must occur server-side to ensure consistency and enable validation. Output must be displayed in a read-only format with syntax highlighting.
+
+**Implementation:** Server-side generation via `DocumentGenerator.generate()` with dual-path rendering (markdown vs Jinja2). Output displayed in document detail page.
 
 ### 5.3 BMAD Compliance Validation
 
-**FR-CV-001: Required Section Detection**  
+**FR-CV-001: Required Section Detection** ❌  
 The system must detect the presence of BMAD required sections in generated prompts: `## Your Role`, `## Input`, and `## Output Requirements`. Validation must be case-insensitive and handle various header formats (markdown headers, alternative formatting).
 
-**FR-CV-002: Variable Completion Check**  
+**Status:** Not implemented. No section detection logic exists.
+
+**FR-CV-002: Variable Completion Check** ⚠️  
 The system must verify that all template variables have been replaced with user-provided values. Any unreplaced variables must be flagged with their variable names and positions in the content.
 
-**FR-CV-003: Validation Status Display**  
+**Implementation:** `extract_variables_from_template()` can detect unreplaced variables, but this check is not actively enforced or displayed to users.
+
+**FR-CV-003: Validation Status Display** ❌  
 The system must display clear validation status for each generated prompt. Valid prompts must show a positive indicator (green badge, check icon). Invalid prompts must show a warning indicator (red badge, warning icon) with detailed explanations of all validation failures.
 
-**FR-CV-004: Validation Notes**  
+**Status:** Not implemented. No validation badges or status indicators.
+
+**FR-CV-004: Validation Notes** ❌  
 The system must provide specific, actionable validation notes explaining each compliance issue. Notes must include the section or variable affected, the nature of the issue, and recommended remediation steps.
 
-**FR-CV-005: Scoring System**  
+**Status:** Not implemented. No validation notes system.
+
+**FR-CV-005: Scoring System** ❌  
 The system should calculate and display a compliance score for each generated prompt. The score should reflect the severity of compliance issues (missing required sections = high severity, short content = medium severity, optional section missing = low severity).
+
+**Status:** Not implemented. No scoring algorithm or display.
 
 ### 5.4 GitHub Integration
 
-**FR-GI-001: Repository Configuration**  
+**FR-GI-001: Repository Configuration** ❌  
 Users must be able to configure GitHub repository settings including owner/repo path, branch name, and directory path for templates. Settings should be persistable and editable. The system should support both public and private repositories with token-based authentication.
 
-**FR-GI-002: Manual Synchronization**  
+**Status:** Not implemented. Only local file upload is available.
+
+**FR-GI-002: Manual Synchronization** ❌  
 Users must be able to trigger manual synchronization from configured repositories. Sync operations must provide progress feedback and completion status. The system must display the number of templates created, updated, and any errors encountered.
 
-**FR-GI-003: Automatic Detection**  
+**Status:** Not implemented. No GitHub API integration.
+
+**FR-GI-003: Automatic Detection** ❌  
 The system must automatically detect agent role and workflow phase from template content and filenames when synchronizing from GitHub. Detection should use filename patterns (e.g., `developer_` prefix, `_planning` suffix) and content analysis (section presence, keyword matching).
 
-**FR-GI-004: Description Extraction**  
+**Status:** Not implemented. Manual role assignment only.
+
+**FR-GI-004: Description Extraction** ❌  
 The system must automatically extract template descriptions from the content above the first markdown header. This description must be used for template cards and search indexing.
 
-**FR-GI-005: Sync History**  
+**Status:** Not implemented. Descriptions must be manually entered or come from YAML frontmatter.
+
+**FR-GI-005: Sync History** ❌  
 The system must maintain a record of sync operations including timestamp, repository configuration, templates created/updated, and any errors. Users must be able to view sync history and retry failed operations.
+
+**Status:** Not implemented. No sync tracking.
 
 ### 5.5 History and Management
 
-**FR-HM-001: Prompt History Display**  
+**FR-HM-001: Prompt History Display** ✅  
 The system must display a searchable, filterable history of all generated prompts. Each history entry must show the template used, generation timestamp, validation status, and quick actions (view, download).
 
-**FR-HM-002: History Filtering**  
+**Implementation:** Document list view with comprehensive filtering, status badges, and action buttons.
+
+**FR-HM-002: History Filtering** ✅  
 Users must be able to filter history by validation status (all, valid, invalid), date range, and template. Filter state should be reflected in the URL for bookmarking.
 
-**FR-HM-003: Input Data Preservation**  
+**Implementation:** URL-based filtering with status, template, and search parameters. No date range picker yet.
+
+**FR-HM-003: Input Data Preservation** ✅  
 The system must store all user-provided input data for each generated prompt. This data must be accessible when viewing prompt history and should enable regeneration with modified values.
 
-**FR-HM-004: Bulk Export**  
+**Implementation:** `variables_used` TextField stores JSON of all input data. Visible in document detail.
+
+**FR-HM-004: Bulk Export** ❌  
 Users must be able to export prompt history to CSV or JSON format. Exports must include all prompt metadata, input data, and generated content.
+
+**Status:** Not implemented. Only individual document downloads available.
 
 ### 5.6 Export and Sharing
 
-**FR-ES-001: Copy to Clipboard**  
+**FR-ES-001: Copy to Clipboard** ✅  
 Users must be able to copy generated prompt content to clipboard with a single click. The system must provide visual feedback confirming successful copy operations.
 
-**FR-ES-002: File Download**  
+**Implementation:** Client-side JavaScript with `navigator.clipboard.writeText()`. Button in document detail view.
+
+**FR-ES-002: File Download** ✅  
 Users must be able to download generated prompts as text files. Downloaded files must include the prompt content, template information, and generation metadata in a standard format.
 
-**FR-ES-003: URL Sharing**  
+**Implementation:** Three download formats available:
+- HTML: With inline styles and metadata
+- Markdown: With YAML frontmatter and metadata footer
+- DOCX: HTML-to-Word conversion with styling
+
+**FR-ES-003: URL Sharing** ❌  
 The system should support sharing of generated prompts via unique URLs. Shared URLs must be accessible to users without authentication and should display the prompt content and validation results.
+
+**Status:** Not implemented. All document views require authentication.
 
 ### 5.7 Template Creation and Multi-Role Support
 
 This section defines requirements for creating templates and associating them with BMAD agent roles.
 
-**FR-TC-001: YAML Frontmatter Parsing**  
+**FR-TC-001: YAML Frontmatter Parsing** ✅  
 The system must parse YAML frontmatter delimited by `---` markers at the beginning of template files. Frontmatter must support fields including `name`, `description`, `role`, `roles`, `workflow_phase`, `version`, `category`, and `tags`. The system must gracefully handle malformed or missing frontmatter.
 
-**FR-TC-002: Single Role Association**  
+**Implementation:** `load_templates` management command uses `yaml.safe_load()` with error handling.
+
+**FR-TC-002: Single Role Association** ✅  
 Templates must support association with a single BMAD agent role using the `role` field in frontmatter. The role field must accept valid role identifiers: `orchestrator`, `analyst`, `pm`, `architect`, `scrum_master`, `developer`, `qa`.
 
-**FR-TC-003: Multiple Role Association**  
+**Implementation:** `agent_role` CharField stores primary role from YAML `role` field.
+
+**FR-TC-003: Multiple Role Association** ✅  
 Templates must support association with multiple BMAD agent roles using the `roles` field in frontmatter. The `roles` field must accept a YAML list of valid role identifiers. The first role in the list is considered the primary role for filtering and display purposes.
 
-**FR-TC-004: Role Auto-Detection**  
+**Implementation:** `agent_roles` JSONField stores complete role list from YAML `roles` field.
+
+**FR-TC-004: Role Auto-Detection** ❌  
 When no explicit roles are specified in frontmatter, the system must attempt to auto-detect the role using:
 1. Filename patterns (e.g., `developer_`, `architect_`, `qa_` prefixes)
 2. Content analysis of the `## Your Role` section
 3. Default to `developer` if no role can be detected
 
-**FR-TC-005: Workflow Phase Detection**  
+**Status:** Not implemented. Manual role assignment only.
+
+**FR-TC-005: Workflow Phase Detection** ❌  
 When no explicit workflow phase is specified in frontmatter, the system must attempt to auto-detect the phase using:
 1. Filename patterns (e.g., `_planning`, `_development` suffixes)
 2. Content analysis for phase-specific keywords
 3. Default to `development` if no phase can be detected
 
-**FR-TC-006: Template Role Display**  
+**Status:** Not implemented. Phase must be specified in YAML.
+
+**FR-TC-006: Template Role Display** ✅  
 Templates with multiple roles must display all associated role badges in the template library. The primary role (first in the `roles` list) must be prominently displayed, with secondary roles shown as additional badges.
 
-**FR-TC-007: Multi-Role Filtering**  
+**Implementation:** Template detail and list views show all roles from `agent_roles` field with color-coded badges.
+
+**FR-TC-007: Multi-Role Filtering** ✅  
 Templates must be filterable by any of their associated roles. When filtering by a specific role, templates that include that role in their `roles` list must appear in results, regardless of whether it is the primary role.
 
-**FR-TC-008: Template Database Model**  
+**Implementation:** Filter logic checks both `agent_role` and `agent_roles` fields. Note: SQLite has limitations with JSONField queries, PostgreSQL recommended for production.
+
+**FR-TC-008: Template Database Model** ✅  
 The Template model must store both:
 - `agent_role`: The primary role (CharField) for backward compatibility and efficient filtering
 - `agent_roles`: The complete list of roles (JSONField) for multi-role support
+
+**Implementation:** Both fields present in `DocumentTemplate` model with appropriate indexes.
 
 ### 5.8 Generate Document Wizard
 
 This section defines requirements for the interactive document generation wizard feature.
 
-**FR-DW-001: Section-Based Wizard**  
+**FR-DW-001: Section-Based Wizard** ❌  
 The system must provide an interactive wizard that guides users through creating a document section-by-section. Each section of the template must be presented as a separate step in the wizard.
 
-**FR-DW-002: Wizard Navigation**  
+**Status:** Not implemented. Current wizard is field-based, not section-based. All fields appear on a single page.
+
+**FR-DW-002: Wizard Navigation** ❌  
 Users must be able to navigate forward and backward through wizard steps. A progress indicator must show the current step and total number of steps. Users must be able to jump to any previously completed step.
 
-**FR-DW-003: Section Content Entry**  
+**Status:** Not implemented. Single-page form without step navigation.
+
+**FR-DW-003: Section Content Entry** ❌  
 Each wizard step must display:
 - The section name and description
 - Input fields for any variables within that section
 - A content textarea for additional user-provided content
 - The original template content for reference
 
-**FR-DW-004: Session Persistence**  
+**Status:** Not implemented. No section-based organization.
+
+**FR-DW-004: Session Persistence** ✅  
 User input data must be persisted in the session during wizard progression. Users must be able to navigate between steps without losing previously entered data. Session data must be cleared upon successful document generation.
 
-**FR-DW-005: Generate Document Action**  
+**Implementation:** Django form handles POST data persistence via browser. Session storage not explicitly used, but form data maintained during submission.
+
+**FR-DW-005: Generate Document Action** ✅  
 Upon completing all wizard steps, users must be able to generate the final document. The system must combine template content with user-provided variable values and section content. The generated document must be validated and stored in the database.
 
-**FR-DW-006: Template Selection Interface**  
+**Implementation:** Form submission triggers `DocumentGenerator.generate()` which stores result in `GeneratedDocument` model.
+
+**FR-DW-006: Template Selection Interface** ⚠️  
 The wizard must include a template selection interface with the same filtering capabilities as the main template library (agent role, workflow phase, search).
+
+**Implementation:** Template selection happens on template list page before entering wizard. No in-wizard selection interface.
 
 ### 5.9 Real-time Validation
 
 This section defines requirements for the real-time validation feature during document generation.
 
-**FR-RV-001: Immediate Validation Feedback**  
+**FR-RV-001: Immediate Validation Feedback** ⚠️  
 The system must provide immediate validation feedback as users enter content in the document wizard. Validation must occur without page reload using asynchronous requests.
 
-**FR-RV-002: Unreplaced Variable Detection**  
+**Implementation:** Client-side HTML5 validation provides immediate feedback for required fields. No async validation API calls implemented. `/api/validate/` endpoint exists but is not actively used.
+
+**FR-RV-002: Unreplaced Variable Detection** ⚠️  
 The system must detect unreplaced template variables (`{{VAR}}` or `[VAR]` syntax) in real-time with 100% detection rate. Detected unreplaced variables must be clearly highlighted and listed.
 
-**FR-RV-003: Content Length Warnings**  
+**Implementation:** `extract_variables_from_template()` method can detect unreplaced variables, but not integrated into real-time UI validation. Form validation ensures all required fields are filled, which indirectly prevents unreplaced variables.
+
+**FR-RV-003: Content Length Warnings** ❌  
 The system must warn users when section content appears too short (fewer than 10 words). Warnings must be advisory and not prevent document generation.
+
+**Status:** Not implemented. No content length analysis.
+
+**FR-RV-004: Content Quality Suggestions** ❌  
+The system must provide real-time content quality suggestions based on section type and BMAD best practices. Examples include: suggesting active voice for "Your Role" sections, recommending specific formatting for input specifications, and highlighting missing detail in output requirements.
+
+**Status:** Not implemented. No content analysis or suggestions.
+
+**FR-RV-005: Validation Status Indicators** ❌  
+Each wizard section must display a validation status indicator (✅ valid, ⚠️ warning, ❌ error) that updates in real-time as users enter content. The overall document validation status must be prominently displayed.
+
+**Status:** Not implemented. No real-time validation indicators in UI.
 
 **FR-RV-004: Content Quality Suggestions**  
 The system must provide contextual suggestions based on section type:
