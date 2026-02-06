@@ -1,9 +1,9 @@
-# BMAD Forge Deployment Package v3.0.0 - File Manifest
+# BMAD Forge Deployment Package v3.2.0 - File Manifest
 
 ## Package Structure
 
 ```
-BMAD_FORGE_DEPLOYMENT_PACKAGE_v3.0/
+BMAD_FORGE_DEPLOYMENT_PACKAGE_v3.2.0/
 │
 ├── scripts/
 │   ├── deploy.ps1                      # Main deployment script
@@ -175,7 +175,7 @@ Total core files: 23
 - Comprehensive documentation
 - Production-ready IIS configuration
 
-### What's New in v3.0.0
+### What's New in v3.2.0
 - ✅ Complete Django app with all models, views, forms
 - ✅ Document generation engine
 - ✅ Full template system
