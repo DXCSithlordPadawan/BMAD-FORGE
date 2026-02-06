@@ -1,0 +1,118 @@
+{% extends 'forge/base.html' %}
+
+{% block title %}Documents - BMAD Forge{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>Generated Documents</h1>
+        <p class="text-muted">Browse and manage generated documents</p>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" 
+                   placeholder="Search documents..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <div class="col-md-3">
+        <select class="form-control" onchange="updateFilter('status', this.value)">
+            <option value="">All Statuses</option>
+            {% for status_key, status_label in status_choices %}
+            <option value="{{ status_key }}" {% if current_status == status_key %}selected{% endif %}>
+                {{ status_label }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select class="form-control" onchange="updateFilter('template', this.value)">
+            <option value="">All Templates</option>
+            <!-- Template options would be dynamically populated -->
+        </select>
+    </div>
+</div>
+
+<!-- Documents Table -->
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Template</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Version</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for document in documents %}
+                <tr>
+                    <td>
+                        <a href="{% url 'forge:document_detail' document.id %}">
+                            {{ document.title }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'forge:template_detail' document.template.id %}">
+                            {{ document.template.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge bg-{{ document.status }}">
+                            {{ document.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ document.created_by.get_full_name|default:document.created_by.username }}</td>
+                    <td>{{ document.created_at|date:"M d, Y" }}</td>
+                    <td>v{{ document.version }}</td>
+                    <td>
+                        <a href="{% url 'forge:document_detail' document.id %}" 
+                           class="btn btn-sm btn-outline-primary">
+                            View
+                        </a>
+                        {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'forge:document_delete' document.id %}" 
+                              style="display: inline-block;"
+                              onsubmit="return confirm('Delete {{ document.title }}? This cannot be undone.');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete document">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">
+                        No documents found. {% if search_query or current_status %}Try adjusting your filters.{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateFilter(param, value) {
+    const url = new URL(window.location);
+    if (value) {
+        url.searchParams.set(param, value);
+    } else {
+        url.searchParams.delete(param);
+    }
+    window.location.href = url.toString();
+}
+</script>
+{% endblock %}

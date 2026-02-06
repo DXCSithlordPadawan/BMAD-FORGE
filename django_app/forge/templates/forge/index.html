@@ -1,0 +1,104 @@
+{% extends 'forge/base.html' %}
+
+{% block title %}Home - BMAD Forge{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Welcome to BMAD Forge</h1>
+            <p class="lead">Your document generation and management system</p>
+            <hr class="my-4">
+            <p>Create, manage, and track documents using powerful templates and workflows.</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'forge:template_list' %}" role="button">
+                Browse Templates
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="card-body">
+                <h2 class="text-primary">{{ template_count }}</h2>
+                <p class="mb-0">Active Templates</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="card-body">
+                <h2 class="text-success">{{ document_count }}</h2>
+                <p class="mb-0">Total Documents</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="card-body">
+                <h2 class="text-info">{{ recent_documents|length }}</h2>
+                <p class="mb-0">Recent Documents</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Role & Phase Stats -->
+{% if role_stats or phase_stats %}
+<div class="row mb-4">
+    {% if role_stats %}
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5 class="mb-2">By Role</h5>
+            <div class="d-flex flex-wrap gap-2">
+                {% for stat in role_stats %}
+                <a href="{% url 'forge:template_list' %}?role={{ stat.key }}" class="badge bg-primary text-decoration-none" style="font-size: 0.9rem;">
+                    {{ stat.label }} <span class="badge bg-light text-dark ms-1">{{ stat.count }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if phase_stats %}
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5 class="mb-2">By Phase</h5>
+            <div class="d-flex flex-wrap gap-2">
+                {% for stat in phase_stats %}
+                <a href="{% url 'forge:template_list' %}?phase={{ stat.key }}" class="badge {% if stat.key == 'planning' %}bg-warning text-dark{% else %}bg-success{% endif %} text-decoration-none" style="font-size: 0.9rem;">
+                    {{ stat.label }} <span class="badge bg-light text-dark ms-1">{{ stat.count }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Recent Documents -->
+{% if recent_documents %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-3">Recent Documents</h2>
+        <div class="list-group">
+            {% for document in recent_documents %}
+            <a href="{% url 'forge:document_detail' document.id %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ document.title }}</h5>
+                    <small>{{ document.created_at|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-1">
+                    <span class="badge bg-secondary">{{ document.template.name }}</span>
+                    <span class="badge bg-{{ document.status|lower }}">{{ document.get_status_display }}</span>
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

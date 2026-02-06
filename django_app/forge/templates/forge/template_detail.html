@@ -1,0 +1,163 @@
+{% extends 'forge/base.html' %}
+
+{% block title %}{{ template.name }} - BMAD Forge{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'forge:index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'forge:template_list' %}">Templates</a></li>
+                <li class="breadcrumb-item active">{{ template.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">{{ template.name }}</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">{{ template.description }}</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Type:</strong> {{ template.get_document_type_display }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Status:</strong>
+                            {% if template.is_active %}
+                            <span class="badge bg-success">Active</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Role:</strong>
+                            {% if template.agent_role %}
+                            <span class="badge bg-primary">{{ template.get_agent_role_display }}</span>
+                            {% else %}-{% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phase:</strong>
+                            {% if template.workflow_phase %}
+                            <span class="badge {% if template.workflow_phase == 'planning' %}bg-warning text-dark{% else %}bg-success{% endif %}">{{ template.get_workflow_phase_display }}</span>
+                            {% else %}-{% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Category:</strong> {{ template.category|default:"-" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Template Type:</strong> {{ template.get_template_type_display }}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Created:</strong> {{ template.created_at|date:"F d, Y" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Last Updated:</strong> {{ template.updated_at|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if variables %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Template Variables</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">This template requires the following information:</p>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for var_name, var_config in variables.items %}
+                            <tr>
+                                <td><code>{{ var_name }}</code></td>
+                                <td>{{ var_config.type|default:"text" }}</td>
+                                <td>
+                                    {% if var_config.required %}
+                                    <span class="badge bg-danger">Required</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Optional</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ var_config.help_text|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'forge:generate_document' template.id %}" class="btn btn-primary btn-lg">
+                        Generate Document
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="/admin/forge/documenttemplate/{{ template.id }}/change/" class="btn btn-outline-secondary">
+                        Edit Template
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if recent_documents %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recent Documents</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for document in recent_documents %}
+                <a href="{% url 'forge:document_detail' document.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex justify-content-between">
+                        <span>{{ document.title|truncatewords:5 }}</span>
+                        <small>{{ document.created_at|date:"M d" }}</small>
+                    </div>
+                    <small class="text-muted">{{ document.get_status_display }}</small>
+                </a>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'forge:document_list' %}?template={{ template.id }}" class="btn btn-sm btn-outline-primary w-100">
+                    View All
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

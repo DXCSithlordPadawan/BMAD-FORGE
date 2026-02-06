@@ -1,0 +1,146 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .import-form {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+    .form-row {
+        margin-bottom: 20px;
+    }
+    .helptext {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.9em;
+        color: #666;
+    }
+    .radio-group {
+        margin: 10px 0;
+    }
+    .radio-group label {
+        display: block;
+        margin: 8px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .radio-group input[type="radio"] {
+        margin-right: 10px;
+    }
+    .radio-group label:hover {
+        background-color: #f5f5f5;
+    }
+    .submit-row {
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+        margin-top: 20px;
+    }
+    .instructions {
+        background-color: #e7f2fa;
+        border-left: 4px solid #2196F3;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Import Template</h1>
+
+<div class="import-form">
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ul>
+            <li>Select a Markdown (.md) template file with YAML frontmatter</li>
+            <li>The file must start with <code>---</code> and contain valid YAML metadata</li>
+            <li>Choose how to handle duplicate names</li>
+            <li>Required frontmatter fields: <code>name</code>, <code>type</code></li>
+        </ul>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="import-form-actual">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+        <div class="errornote">
+            <p>Please correct the errors below:</p>
+            {{ form.errors }}
+        </div>
+        {% endif %}
+
+        <div class="form-row">
+            <div>
+                <label for="{{ form.template_file.id_for_label }}" class="required">{{ form.template_file.label }}:</label>
+                {{ form.template_file }}
+                {% if form.template_file.help_text %}
+                <p class="helptext">{{ form.template_file.help_text }}</p>
+                {% endif %}
+                {% if form.template_file.errors %}
+                <p class="errornote">{{ form.template_file.errors }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label for="{{ form.overwrite.id_for_label }}" class="required">{{ form.overwrite.label }}:</label>
+                <div class="radio-group">
+                    {% for radio in form.overwrite %}
+                    <label>
+                        {{ radio.tag }}
+                        {{ radio.choice_label }}
+                    </label>
+                    {% endfor %}
+                </div>
+                {% if form.overwrite.help_text %}
+                <p class="helptext">{{ form.overwrite.help_text }}</p>
+                {% endif %}
+                {% if form.overwrite.errors %}
+                <p class="errornote">{{ form.overwrite.errors }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label for="{{ form.new_name.id_for_label }}">{{ form.new_name.label }}:</label>
+                {{ form.new_name }}
+                {% if form.new_name.help_text %}
+                <p class="helptext">{{ form.new_name.help_text }}</p>
+                {% endif %}
+                {% if form.new_name.errors %}
+                <p class="errornote">{{ form.new_name.errors }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="submit-row">
+            <input type="submit" value="Import Template" class="default" />
+            <a href="{% url 'admin:forge_documenttemplate_changelist' %}" class="button cancel-link">Cancel</a>
+        </div>
+    </form>
+
+    <div class="instructions" style="margin-top: 30px; background-color: #fff8e1; border-left-color: #ffc107;">
+        <h3>Example YAML Frontmatter:</h3>
+        <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto;">---
+name: My Template Name
+type: template
+document_type: technical
+description: A description of the template
+agent_role: architect
+workflow_phase: design
+category: architecture
+variables:
+  project_name:
+    type: string
+    description: Name of the project
+---
+
+Template content goes here...</pre>
+    </div>
+</div>
+{% endblock %}

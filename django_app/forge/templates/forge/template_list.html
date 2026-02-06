@@ -1,0 +1,95 @@
+{% extends 'forge/base.html' %}
+
+{% block title %}Templates - BMAD Forge{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>Document Templates</h1>
+        <p class="text-muted">Select a template to generate a new document</p>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <form method="get" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search templates..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <div class="d-flex gap-2">
+            <select class="form-control" onchange="updateFilter('role', this.value)">
+                <option value="">All Roles</option>
+                {% for role_key, role_label in agent_roles %}
+                <option value="{{ role_key }}" {% if current_role == role_key %}selected{% endif %}>{{ role_label }}</option>
+                {% endfor %}
+            </select>
+            <select class="form-control" onchange="updateFilter('phase', this.value)">
+                <option value="">All Phases</option>
+                {% for phase_key, phase_label in workflow_phases %}
+                <option value="{{ phase_key }}" {% if current_phase == phase_key %}selected{% endif %}>{{ phase_label }}</option>
+                {% endfor %}
+            </select>
+            <select class="form-control" onchange="updateFilter('template_type', this.value)">
+                <option value="">All Types</option>
+                {% for type_key, type_label in template_types %}
+                <option value="{{ type_key }}" {% if current_template_type == type_key %}selected{% endif %}>{{ type_label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Template Grid -->
+<div class="row">
+    {% for template in templates %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ template.name }}</h5>
+                <p class="card-text">{{ template.description|truncatewords:20 }}</p>
+                {% if template.agent_role %}
+                <span class="badge bg-primary mb-1">{{ template.get_agent_role_display }}</span>
+                {% endif %}
+                {% if template.workflow_phase %}
+                <span class="badge {% if template.workflow_phase == 'planning' %}bg-warning text-dark{% else %}bg-success{% endif %} mb-1">{{ template.get_workflow_phase_display }}</span>
+                {% endif %}
+                {% if template.template_type == 'agent' %}
+                <span class="badge bg-secondary mb-1">Agent</span>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'forge:template_detail' template.id %}" class="btn btn-outline-primary btn-sm">
+                    View Details
+                </a>
+                <a href="{% url 'forge:generate_document' template.id %}" class="btn btn-primary btn-sm">
+                    Generate
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No templates found. {% if search_query or current_role or current_phase or current_template_type %}Try adjusting your filters.{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateFilter(param, value) {
+    var url = new URL(window.location.href);
+    if (value) {
+        url.searchParams.set(param, value);
+    } else {
+        url.searchParams.delete(param);
+    }
+    window.location.href = url.toString();
+}
+</script>
+{% endblock %}
