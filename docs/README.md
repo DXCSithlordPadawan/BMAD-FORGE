@@ -1,4 +1,4 @@
-# BMAD Forge - Complete Deployment Package v3.0.0
+# BMAD Forge - Complete Deployment Package v3.2.0
 
 ## Overview
 
